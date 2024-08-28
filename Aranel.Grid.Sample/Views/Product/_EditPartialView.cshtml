@@ -1,0 +1,23 @@
+﻿@model Product
+
+@Html.HiddenFor(model => model.Id)
+
+<div class="mb-3">
+    <label for="name" class="form-label">Name</label>
+    @Html.TextBoxFor(model => model.Name, new { @class = "form-control", @id = "name" })
+    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+</div>
+
+<div class="mb-3">
+    <label for="category" class="form-label">Category</label>
+    @Html.TextBoxFor(model => model.Category, new { @class = "form-control", @id = "name" })
+    @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger" })
+</div>
+
+<div class="mb-3">
+    <label for="price" class="form-label">Price</label>
+    @Html.TextBoxFor(model => model.Price, new { @class = "form-control", @id = "price" })
+    @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+</div>
+
+<!-- Add other fields as necessary -->

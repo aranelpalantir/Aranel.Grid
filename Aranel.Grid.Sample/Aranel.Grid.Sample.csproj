@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\css\aranel.grid.css" />
+    <Content Remove="wwwroot\js\aranel.grid.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\css\aranel.grid.css" />
+    <None Include="wwwroot\js\aranel.grid.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Aranel.Grid\Aranel.Grid.csproj" />
+  </ItemGroup>
+
+</Project>

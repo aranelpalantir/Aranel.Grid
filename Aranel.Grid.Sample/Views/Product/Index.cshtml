@@ -1,0 +1,141 @@
+﻿@{
+    ViewBag.Title = "Products";
+}
+
+<h1 class="mb-4">Products</h1>
+
+<div id="gridWrapper" class="container"></div>
+
+<div id="gridWrapper2" class="container"></div>
+
+@section Scripts {
+    <script>
+        let columns = {
+            'name': { title: "Name", isSortable: false },
+            'price': {
+                title: "Price", isFilterable: true, dataType: "number", titleAlign: "center", contentAlign: "right", format: (value) => value.toFixed(2)
+            },
+            'category': { title: "Category" },
+            'id': {
+                title: "id",
+                render: function (item) {                   
+                    return `${item.id}`;
+                }
+            }
+        };
+        var grid = new AranelGridBuilder()
+            .setSelector("#gridWrapper")
+            .setDataUrl('/Product/GetProducts')
+            .setCreateUrl("/Product/Create")
+            .setEditUrl("/Product/Edit")
+            .setDeleteUrl("/Product/Delete")
+            .setColumns(columns)
+            .setSortColumn("price")
+            .setSortDirection("desc")
+            .setGridHeader("MY SAMPLE GRID")
+            .setCreateModalTitle("Create")
+            .setEditModalTitle("Edit")
+            .setDeleteModalTitle("Delete Operation")
+            .setExportEnabled(true)
+            .setPageSizes([5, 100, 1000, 1000])
+            .build();
+
+        grid.onRowSelected(function (event, selectedRowData) {
+            console.log('Grid row selected:', selectedRowData);
+        });
+        let columns2 = {
+            'name': { title: "Name", isSortable: false },
+            'price': {
+                title: "Price", isFilterable: true, dataType: "number", titleAlign: "center", contentAlign: "right", format: (value) => value.toFixed(2)
+            },
+            'category': { title: "Category" },
+            'releaseDate': {
+                title: "Release Date", dataType: "date", format: (value) => formatDate(value)
+            },
+            'warrantyExpiry': {
+                title: "Warranty Expiry", dataType: "date", format: (value) => formatDateTime(value)
+            },
+            'inStock': {
+                title: "In Stock", dataType: "boolean", contentAlign: "center"
+            },
+            'action': {
+                title: "",
+                render: function (item) {
+                    return `
+                     <i class="fas fa-edit grid-edit" data-edit-url="/Products/Edit/${item.id}"></i>
+                     <i class="fas fa-trash-alt grid-delete" data-delete-url="/Products/Delete/${item.id}"></i>
+                     `;
+                }
+            }, 'name2': {
+                title: "id",
+                render: function (item) {
+                    // Dynamically generate a link using item.id data
+                    return `${item.id}`;
+                }
+            }
+        };
+        function formatDate(dateString) {
+            // Convert the date string to a Date object
+            const date = new Date(dateString);
+
+            // Check if it's a valid date
+            if (isNaN(date.getTime())) {
+                return dateString; // If it's an invalid date string, return it as is
+            }
+
+            // Return the date in the desired format (e.g., day.month.year)
+            return date.toLocaleDateString('tr-TR'); // You can also use formats like 'en-US', 'fr-FR', 'de-DE', etc.
+        }
+        function formatDateTime(dateString) {
+            const date = new Date(dateString);
+
+            // Check if it's a valid date
+            if (isNaN(date.getTime())) {
+                return dateString; // If it's an invalid date string, return it as is
+            }
+
+            // Get date components
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+            const year = date.getFullYear();
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            const seconds = String(date.getSeconds()).padStart(2, '0');
+
+            // Construct the formatted date string
+            return `${day}.${month}.${year} ${hours}:${minutes}:${seconds}`;
+        }
+        var grid2;  // Defined as a global variable
+
+        $(document).ready(function () {
+            grid2 = new AranelGridBuilder()
+                .setSelector("#gridWrapper2")
+                .setDataUrl('/Product/GetProducts')
+                .setEditUrl("/Product/Edit")
+                .setDeleteUrl("/Product/Delete")
+                .setColumns(columns2)
+                .setSortColumn("price")
+                .setSortDirection("desc")
+                .setGridHeader("MY SAMPLE GRID2")
+                .build();
+            grid2.onRowSelected(function (event, $row, selectedRowData) {
+                console.log('Selected row element:', $row); // This is the jQuery-wrapped row element
+                console.log('Selected row data:', selectedRowData); // This is the actual data object for the selected row
+            });
+            // Listen for the rowRemoving event to apply custom animations
+            grid2.onRowRemoving((event, $rowSelector, rowData) => {
+                console.log('Row is being removed:', $rowSelector);
+                console.log('Row data:', rowData);
+                // You can apply additional animations or logic here
+            });
+
+            // Listen for the rowRemoved event to perform actions after the row is removed
+            grid2.onRowRemoved((event, rowId, rowData) => {
+                console.log(`Row with ID ${rowId} has been removed.`);
+                console.log('Removed row data:', rowData);
+                // You can perform additional cleanup or logic here
+            });
+        });
+
+    </script>
+}
