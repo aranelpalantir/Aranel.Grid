@@ -5,7 +5,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<PackageId>Aranel.Grid</PackageId>
-		<Version>1.0.2</Version>
+		<Version>1.0.3</Version>
 		<Authors>Aranel Palantir</Authors>
 		<Owners>Aranel Palantir</Owners>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>

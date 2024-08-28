@@ -33,15 +33,15 @@ In your ASP.NET Core project, you can use the `Aranel.Grid` library to handle se
 Example usage:
 
 ```csharp
-using Aranel.Grid.Filtering;
-using Aranel.Grid.DataSource;
+        [HttpPost]
+        public JsonResult GetProducts([FromBody] DataSourceLoadOptions dataSourceLoadOptions)
+        {
+            var query = _context.Products.AsQueryable();
+            var result = DataSourceLoader.Load(dataSourceLoadOptions, query, new CultureInfo("tr-TR"));
+            return Json(result);
 
-// Example method to get filtered and sorted data
-public PaginationList<Product> GetProducts(GridFilter filter)
-{
-    var query = _context.Products.AsQueryable();
-    return GridHelper.GetPaginationList(filter, query);
-}
+        }
+    }
 ```
 
 ### 2. Client-Side Integration
@@ -85,8 +85,8 @@ $(document).ready(function () {
         .build();
 
     grid.onRowSelected(function (event, $row, selectedRowData) {
-        console.log('Selected row element:', $row); // This is the jQuery-wrapped row element
-        console.log('Selected row data:', selectedRowData); // This is the actual data object for the selected row
+        console.log('Selected row element:', $row);
+        console.log('Selected row data:', selectedRowData);
     });
 
     grid.onRowRemoving((event, $rowSelector, rowData) => {
@@ -174,7 +174,6 @@ let columns = {
     'id2': {
         title: "id",
         render: function (item) {
-            // Dynamically generate a link using item.id data
             return `${item.id}`;
         }
     }
